@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile CAB Search</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #0f1117;
+    color: #e2e8f0;
+    font-size: 14px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: #1e2433;
+    border-bottom: 1px solid #2d3748;
+    color: white;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  header h1 { font-size: 18px; font-weight: 600; }
+  header span { font-size: 13px; opacity: 0.5; }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .tab-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid #2d3748;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+
+  .tab-btn.active {
+    background: #4f7ef7;
+    border-color: #4f7ef7;
+    color: white;
+  }
+
+  .controls {
+    background: #1a1f2e;
+    border-bottom: 1px solid #2d3748;
+    padding: 12px 24px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #4b5563;
+  }
+
+  input[type="search"] {
+    width: 100%;
+    padding: 8px 12px 8px 34px;
+    border: 1px solid #2d3748;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    background: #0f1117;
+    color: #e2e8f0;
+  }
+
+  input[type="search"]:focus {
+    border-color: #4f7ef7;
+    box-shadow: 0 0 0 3px rgba(79,126,247,0.15);
+  }
+
+  input[type="search"]::placeholder { color: #4b5563; }
+
+  select {
+    padding: 8px 10px;
+    border: 1px solid #2d3748;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #0f1117;
+    color: #e2e8f0;
+    cursor: pointer;
+    outline: none;
+  }
+
+  select:focus { border-color: #4f7ef7; }
+
+  .count {
+    margin-left: auto;
+    color: #4b5563;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  /* TABLE VIEW */
+  #table-view {
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .table-wrap {
+    padding: 16px 24px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1a1f2e;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  thead th {
+    background: #1e2433;
+    border-bottom: 1px solid #2d3748;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #4b5563;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  thead th:hover { color: #4f7ef7; }
+  thead th.sorted { color: #4f7ef7; }
+  thead th .sort-icon { margin-left: 4px; opacity: 0.5; }
+  thead th.sorted .sort-icon { opacity: 1; }
+
+  tbody tr {
+    border-bottom: 1px solid #1e2433;
+    transition: background 0.1s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #1e2a3a; }
+
+  td { padding: 10px 14px; vertical-align: top; }
+
+  .name { font-weight: 500; color: #f1f5f9; }
+  .company { color: #94a3b8; }
+  .email a { color: #4f7ef7; text-decoration: none; }
+  .email a:hover { text-decoration: underline; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .badge-live { background: #14532d; color: #4ade80; }
+  .badge-async { background: #1e3a5f; color: #60a5fa; }
+  .badge-lead { background: #1e2433; color: #94a3b8; }
+  .badge-unsub { background: #450a0a; color: #f87171; }
+  .badge-none { background: #1e2433; color: #4b5563; }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    background: #2e1065;
+    color: #a78bfa;
+    margin-right: 3px;
+  }
+
+  .notes-cell { max-width: 320px; }
+
+  .notes-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #64748b;
+    line-height: 1.4;
+    cursor: pointer;
+  }
+
+  .notes-text.expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+  }
+
+  .notes-toggle {
+    color: #4f7ef7;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 2px;
+    display: inline-block;
+  }
+
+  .builder-id { color: #374151; font-size: 12px; }
+  .location { color: #64748b; font-size: 12px; white-space: nowrap; }
+  .empty { text-align: center; padding: 60px; color: #374151; }
+  .highlight { background: #713f12; color: #fde68a; border-radius: 2px; }
+
+  /* MAP VIEW */
+  #map-view {
+    flex: 1;
+    display: none;
+    position: relative;
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Dark tile filter */
+  .leaflet-tile { filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7); }
+
+  .leaflet-container { background: #0f1117; }
+
+  /* Custom popup */
+  .leaflet-popup-content-wrapper {
+    background: #1e2433;
+    color: #e2e8f0;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .leaflet-popup-tip { background: #1e2433; }
+  .leaflet-popup-close-button { color: #64748b !important; }
+
+  .popup-location { font-size: 12px; color: #64748b; margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .popup-member {
+    padding: 6px 0;
+    border-bottom: 1px solid #2d3748;
+  }
+
+  .popup-member:last-child { border-bottom: none; }
+
+  .popup-name { font-weight: 600; color: #f1f5f9; font-size: 13px; }
+  .popup-company { color: #94a3b8; font-size: 12px; }
+  .popup-email { color: #4f7ef7; font-size: 12px; text-decoration: none; display: block; margin-top: 2px; }
+
+  /* Map no-location notice */
+  .map-notice {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e2433;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #64748b;
+    z-index: 1000;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<div id="auth-gate" style="
+  position:fixed;inset:0;z-index:9999;
+  background:#0f1117;
+  display:flex;align-items:center;justify-content:center;
+">
+  <div style="
+    background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;
+    padding:40px;width:340px;text-align:center;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  ">
+    <img src="Buildertrend Logo.png" alt="Buildertrend" style="height:28px;margin-bottom:24px">
+    <h2 style="color:#f1f5f9;font-size:18px;margin-bottom:6px">Mobile CAB Search</h2>
+    <p style="color:#64748b;font-size:13px;margin-bottom:24px">Enter the password to continue</p>
+    <input id="pw-input" type="password" placeholder="Password"
+      style="
+        width:100%;padding:10px 14px;border-radius:6px;
+        border:1px solid #2d3748;background:#0f1117;
+        color:#e2e8f0;font-size:14px;outline:none;margin-bottom:12px;
+      "
+    >
+    <div id="pw-error" style="color:#f87171;font-size:12px;margin-bottom:10px;display:none">Incorrect password</div>
+    <button onclick="checkPassword()" style="
+      width:100%;padding:10px;border-radius:6px;border:none;
+      background:#4f7ef7;color:white;font-size:14px;font-weight:600;cursor:pointer;
+    ">Enter</button>
+  </div>
+</div>
+
+<script>
+  const PASS_HASH = "008c70392e3abfbd0fa47bbc2ed96aa99bd49e159727fcba0f2e6abeb3a9d601";
+  async function hashStr(s) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+  }
+  async function checkPassword() {
+    const val = document.getElementById("pw-input").value;
+    const h = await hashStr(val);
+    if (h === PASS_HASH) {
+      sessionStorage.setItem("cab_auth", h);
+      document.getElementById("auth-gate").style.display = "none";
+    } else {
+      document.getElementById("pw-error").style.display = "block";
+    }
+  }
+  document.getElementById("pw-input").addEventListener("keydown", e => { if (e.key === "Enter") checkPassword(); });
+  (async () => {
+    const stored = sessionStorage.getItem("cab_auth");
+    if (stored && stored === PASS_HASH) document.getElementById("auth-gate").style.display = "none";
+  })();
+</script>
+
+<header>
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="Buildertrend Logo.png" alt="Buildertrend" style="height:28px;object-fit:contain">
+    <div>
+      <h1>Mobile CAB Search</h1>
+      <span>Customer Advisory Board Members &amp; Leads</span>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-table" onclick="switchTab('table')">Table</button>
+    <button class="tab-btn" id="tab-map" onclick="switchTab('map')">Map</button>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="search" id="search" placeholder="Search name, company, email, notes…" autofocus>
+  </div>
+
+  <select id="engagementFilter">
+    <option value="">All Engagement</option>
+    <option value="Live Member">Live Member</option>
+    <option value="Async Member">Async Member</option>
+    <option value="Lead">Lead</option>
+    <option value="Unsubscribe">Unsubscribe</option>
+  </select>
+
+  <select id="tagFilter">
+    <option value="">All Tags</option>
+    <option value="EA 1">EA 1</option>
+    <option value="EA 2">EA 2</option>
+  </select>
+
+  <select id="countryFilter">
+    <option value="">All Countries</option>
+    <option value="US">🇺🇸 United States</option>
+    <option value="CA">🇨🇦 Canada</option>
+    <option value="AU">🇦🇺 Australia</option>
+    <option value="Other">🌐 Other</option>
+  </select>
+
+  <select id="stateFilter">
+    <option value="">All States/Provinces</option>
+  </select>
+
+  <div class="count" id="count"></div>
+</div>
+
+<div id="table-view">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-col="Name">Name <span class="sort-icon">↕</span></th>
+          <th data-col="Company Name">Company <span class="sort-icon">↕</span></th>
+          <th data-col="Email">Email</th>
+          <th data-col="Engagement">Status <span class="sort-icon">↕</span></th>
+          <th data-col="Tags">Tags</th>
+          <th data-col="Notes">Notes</th>
+          <th data-col="location">Location <span class="sort-icon">↕</span></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="empty" style="display:none">No results found.</div>
+  </div>
+</div>
+
+<div id="map-view">
+  <div id="map"></div>
+  <div class="map-notice" id="map-notice"></div>
+</div>
+
+<script>
+const TOKEN = "REMOVED_READ_TOKEN";
+const BASE = "appH2izKTgWzk0Y70";
+const TABLE = "Table%201";
+
+const CA_PROVINCES = new Set(["AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"]);
+const AU_STATES = new Set(["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"]);
+
+function inferCountry(state) {
+  if (!state) return "";
+  if (CA_PROVINCES.has(state)) return "CA";
+  if (AU_STATES.has(state)) return "AU";
+  // 2-letter codes not matched above are US states
+  if (/^[A-Z]{2}$/.test(state)) return "US";
+  return "Other";
+}
+
+const GEOCODED = {"Virginia Beach, VA":{"lat":36.8496579,"lon":-75.9760751},"Savannah, GA":{"lat":32.0790074,"lon":-81.0921335},"Charlotte, NC":{"lat":35.2272086,"lon":-80.8430827},"Islamorada, FL":{"lat":24.9236561,"lon":-80.6291479},"Hilton Head Island, SC":{"lat":32.1618488,"lon":-80.7512616},"Greenville, SC":{"lat":34.851354,"lon":-82.3984882},"De Pere, WI":{"lat":44.4493584,"lon":-88.0599986},"Atlanta, GA":{"lat":33.7544657,"lon":-84.3898151},"Sarasota, FL":{"lat":27.3365805,"lon":-82.5308545},"Fridley, MN":{"lat":45.0838291,"lon":-93.2590388},"Olivette, MO":{"lat":38.6653297,"lon":-90.3759499},"Seattle, WA":{"lat":47.6038321,"lon":-122.330062},"Greenville, NC":{"lat":35.613224,"lon":-77.3724593},"Mercer Island, WA":{"lat":47.5766324,"lon":-122.2276378},"University Pl, WA":{"lat":47.2258172,"lon":-122.5371325},"Houston, TX":{"lat":29.7589382,"lon":-95.3676974},"Waukesha, WI":{"lat":43.0622536,"lon":-88.3123889},"Suffolk, PE":{"lat":46.3317395,"lon":-63.0643844},"Holly, MI":{"lat":42.7919727,"lon":-83.6277255},"Omaha, NE":{"lat":41.2587459,"lon":-95.9383758},"Nevis, MN":{"lat":46.9651482,"lon":-94.8395533},"Evergreen, CO":{"lat":39.6361637,"lon":-105.321458},"Chicago, IL":{"lat":41.8755616,"lon":-87.6244212},"VIC":{"lat":-37.0,"lon":144.0},"Sugar Land, TX":{"lat":29.6196787,"lon":-95.6349463},"Pasadena, CA":{"lat":34.1476507,"lon":-118.144155},"Dexter, MI":{"lat":42.3372998,"lon":-83.8842},"Jersey Village, TX":{"lat":29.888578,"lon":-95.5699185},"Providenciales":{"lat":21.8020614,"lon":-72.3004456},"Pilot Point, TX":{"lat":33.3959396,"lon":-96.9591054},"Tyler, TX":{"lat":32.3512601,"lon":-95.3010624},"Indian Trail, NC":{"lat":35.0768141,"lon":-80.6692352},"Minnetonka, MN":{"lat":44.9405086,"lon":-93.4638936},"Lancaster, PA":{"lat":40.0379958,"lon":-76.3056707},"Whistler, BC":{"lat":50.1171903,"lon":-122.9543022},"Plymouth, MI":{"lat":42.3712,"lon":-83.4675021},"Key West, FL":{"lat":24.5548262,"lon":-81.8020722},"Westmount, QC":{"lat":45.4856917,"lon":-73.596562},"Emporia, VA":{"lat":36.6937606,"lon":-77.5357141},"Escondido, CA":{"lat":33.1216751,"lon":-117.0814849}};
+
+// Fix VIC (Victoria, Australia)
+GEOCODED["VIC"] = { lat: -37.4713, lon: 144.7852 };
+
+let allRecords = [];
+let sortCol = "Name";
+let sortDir = 1;
+let map = null;
+let markers = [];
+let currentTab = "table";
+
+async function fetchAll() {
+  let records = [];
+  let offset = null;
+  do {
+    let url = `https://api.airtable.com/v0/${BASE}/${TABLE}?pageSize=100`;
+    if (offset) url += `&offset=${offset}`;
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    const data = await res.json();
+    records.push(...data.records);
+    offset = data.offset;
+  } while (offset);
+  return records;
+}
+
+function badgeClass(eng) {
+  if (eng === "Live Member") return "badge-live";
+  if (eng === "Async Member") return "badge-async";
+  if (eng === "Lead") return "badge-lead";
+  if (eng === "Unsubscribe") return "badge-unsub";
+  return "badge-none";
+}
+
+function esc(s) {
+  return (s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function highlight(text, query) {
+  if (!query) return esc(text);
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return esc(text).replace(new RegExp(`(${escaped})`, 'gi'), '<mark class="highlight">$1</mark>');
+}
+
+function getValue(fields, col) {
+  if (col === "location") return [fields.City, fields.State].filter(Boolean).join(", ");
+  if (col === "Tags") return (fields.Tags || []).join(", ");
+  return fields[col] || "";
+}
+
+function populateStateFilter() {
+  const countryFilter = document.getElementById("countryFilter").value;
+  const stateSelect = document.getElementById("stateFilter");
+  const current = stateSelect.value;
+
+  const states = new Map();
+  allRecords.forEach(r => {
+    const state = (r.fields.State || "").trim();
+    if (!state) return;
+    const country = inferCountry(state);
+    if (countryFilter && country !== countryFilter) return;
+    if (!states.has(state)) states.set(state, 0);
+    states.set(state, states.get(state) + 1);
+  });
+
+  const sorted = [...states.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  stateSelect.innerHTML = `<option value="">All States/Provinces</option>` +
+    sorted.map(([s, n]) => `<option value="${s}"${s === current ? " selected" : ""}>${s} (${n})</option>`).join("");
+}
+
+function getFiltered() {
+  const query = document.getElementById("search").value.trim().toLowerCase();
+  const engFilter = document.getElementById("engagementFilter").value;
+  const tagFilter = document.getElementById("tagFilter").value;
+  const countryFilter = document.getElementById("countryFilter").value;
+  const stateFilter = document.getElementById("stateFilter").value;
+
+  return allRecords.filter(r => {
+    const f = r.fields;
+    if (engFilter && f.Engagement !== engFilter) return false;
+    if (tagFilter && !(f.Tags || []).includes(tagFilter)) return false;
+    if (countryFilter && inferCountry((f.State || "").trim()) !== countryFilter) return false;
+    if (stateFilter && (f.State || "").trim() !== stateFilter) return false;
+    if (query) {
+      const searchable = [f.Name, f["Company Name"], f.Email, f.Notes, f.City, f.State]
+        .filter(Boolean).join(" ").toLowerCase();
+      if (!searchable.includes(query)) return false;
+    }
+    return true;
+  });
+}
+
+function render() {
+  const query = document.getElementById("search").value.trim().toLowerCase();
+  let filtered = getFiltered();
+
+  filtered.sort((a, b) => {
+    const va = getValue(a.fields, sortCol).toLowerCase();
+    const vb = getValue(b.fields, sortCol).toLowerCase();
+    return va < vb ? -sortDir : va > vb ? sortDir : 0;
+  });
+
+  document.getElementById("count").textContent = `${filtered.length} of ${allRecords.length} members`;
+
+  if (currentTab === "map") {
+    renderMap(filtered);
+    return;
+  }
+
+  const tbody = document.getElementById("tbody");
+  const empty = document.getElementById("empty");
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = "";
+    empty.style.display = "block";
+    return;
+  }
+  empty.style.display = "none";
+
+  tbody.innerHTML = filtered.map(r => {
+    const f = r.fields;
+    const eng = f.Engagement || "";
+    const tags = (f.Tags || []);
+    const notes = f.Notes || "";
+    const loc = [f.City, f.State].filter(Boolean).join(", ");
+    const id = r.id;
+
+    return `<tr>
+      <td>
+        <div class="name">${highlight(f.Name || "", query)}</div>
+        ${f["Builder ID"] ? `<div class="builder-id">#${esc(f["Builder ID"])}</div>` : ""}
+      </td>
+      <td class="company">${highlight(f["Company Name"] || "", query)}</td>
+      <td class="email">${f.Email ? `<a href="mailto:${esc(f.Email)}">${highlight(f.Email, query)}</a>` : ""}</td>
+      <td><span class="badge ${badgeClass(eng)}">${esc(eng) || "—"}</span></td>
+      <td>${tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</td>
+      <td class="notes-cell">
+        ${notes ? `
+          <div class="notes-text" id="notes-${id}" onclick="toggleNote('${id}')">${highlight(notes, query)}</div>
+          <span class="notes-toggle" onclick="toggleNote('${id}')">show more</span>
+        ` : ""}
+      </td>
+      <td class="location">${highlight(loc, query)}</td>
+    </tr>`;
+  }).join("");
+}
+
+function renderMap(filtered) {
+  // Clear old markers
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+
+  // Group by location key
+  const byLoc = {};
+  let withLocation = 0;
+
+  filtered.forEach(r => {
+    const f = r.fields;
+    const city = (f.City || "").trim();
+    const state = (f.State || "").trim();
+    if (!city && !state) return;
+    const key = city && state ? `${city}, ${state}` : city || state;
+    if (!GEOCODED[key]) return;
+    withLocation++;
+    if (!byLoc[key]) byLoc[key] = [];
+    byLoc[key].push(r);
+  });
+
+  Object.entries(byLoc).forEach(([loc, records]) => {
+    const { lat, lon } = GEOCODED[loc];
+    const count = records.length;
+
+    const color = count >= 3 ? "#4ade80" : count === 2 ? "#60a5fa" : "#4f7ef7";
+
+    const icon = L.divIcon({
+      className: "",
+      html: `<div style="
+        width:${count > 1 ? 32 : 24}px;
+        height:${count > 1 ? 32 : 24}px;
+        background:${color};
+        border-radius:50%;
+        border:2px solid rgba(255,255,255,0.2);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:${count > 1 ? 12 : 0}px;
+        font-weight:700;
+        color:#0f1117;
+        box-shadow:0 2px 8px rgba(0,0,0,0.5);
+      ">${count > 1 ? count : ""}</div>`,
+      iconSize: [count > 1 ? 32 : 24, count > 1 ? 32 : 24],
+      iconAnchor: [count > 1 ? 16 : 12, count > 1 ? 16 : 12],
+    });
+
+    const popupHtml = `
+      <div style="min-width:200px;max-width:280px">
+        <div class="popup-location">${esc(loc)}</div>
+        ${records.map(r => {
+          const f = r.fields;
+          return `<div class="popup-member">
+            <div class="popup-name">${esc(f.Name || "")}</div>
+            <div class="popup-company">${esc(f["Company Name"] || "")}</div>
+            ${f.Email ? `<a class="popup-email" href="mailto:${esc(f.Email)}">${esc(f.Email)}</a>` : ""}
+            <div style="margin-top:4px"><span class="badge ${badgeClass(f.Engagement || "")}" style="font-size:10px">${esc(f.Engagement || "—")}</span></div>
+          </div>`;
+        }).join("")}
+      </div>`;
+
+    const marker = L.marker([lat, lon], { icon }).addTo(map);
+    marker.bindPopup(popupHtml, { maxWidth: 300 });
+    markers.push(marker);
+  });
+
+  const notice = document.getElementById("map-notice");
+  notice.textContent = `${withLocation} of ${filtered.length} filtered members have location data`;
+
+  if (markers.length > 0) {
+    const group = L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.2));
+  }
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById("tab-table").classList.toggle("active", tab === "table");
+  document.getElementById("tab-map").classList.toggle("active", tab === "map");
+  document.getElementById("table-view").style.display = tab === "table" ? "block" : "none";
+  document.getElementById("map-view").style.display = tab === "map" ? "flex" : "none";
+
+  if (tab === "map") {
+    if (!map) {
+      map = L.map("map", { zoomControl: true }).setView([38, -96], 4);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors"
+      }).addTo(map);
+    }
+    setTimeout(() => { map.invalidateSize(); renderMap(getFiltered()); }, 50);
+  } else {
+    render();
+  }
+}
+
+function toggleNote(id) {
+  const el = document.getElementById(`notes-${id}`);
+  const toggle = el.nextElementSibling;
+  if (el.classList.contains("expanded")) {
+    el.classList.remove("expanded");
+    toggle.textContent = "show more";
+  } else {
+    el.classList.add("expanded");
+    toggle.textContent = "show less";
+  }
+}
+
+document.getElementById("search").addEventListener("input", render);
+document.getElementById("engagementFilter").addEventListener("change", render);
+document.getElementById("tagFilter").addEventListener("change", render);
+document.getElementById("countryFilter").addEventListener("change", () => {
+  document.getElementById("stateFilter").value = "";
+  populateStateFilter();
+  render();
+});
+document.getElementById("stateFilter").addEventListener("change", render);
+
+document.querySelectorAll("thead th[data-col]").forEach(th => {
+  th.addEventListener("click", () => {
+    const col = th.dataset.col;
+    if (sortCol === col) sortDir *= -1;
+    else { sortCol = col; sortDir = 1; }
+    document.querySelectorAll("thead th").forEach(t => t.classList.remove("sorted"));
+    th.classList.add("sorted");
+    th.querySelector(".sort-icon").textContent = sortDir === 1 ? "↑" : "↓";
+    render();
+  });
+});
+
+fetchAll().then(records => {
+  allRecords = records;
+  populateStateFilter();
+  render();
+}).catch(err => {
+  document.getElementById("count").textContent = "Error loading data";
+  console.error(err);
+});
+</script>
+</body>
+</html>
