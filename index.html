@@ -349,8 +349,8 @@
     </div>
   </div>
   <div class="tabs">
-    <button class="tab-btn active" id="tab-table" onclick="switchTab('table')">Table</button>
-    <button class="tab-btn" id="tab-map" onclick="switchTab('map')">Map</button>
+    <button class="tab-btn" id="tab-table" onclick="switchTab('table')">Table</button>
+    <button class="tab-btn active" id="tab-map" onclick="switchTab('map')">Map</button>
   </div>
 </header>
 
@@ -443,7 +443,7 @@ let sortCol = "Name";
 let sortDir = 1;
 let map = null;
 let markers = [];
-let currentTab = "table";
+let currentTab = "map";
 
 async function fetchAll() {
   let records = [];
@@ -712,7 +712,7 @@ document.querySelectorAll("thead th[data-col]").forEach(th => {
 fetchAll().then(records => {
   allRecords = records;
   populateStateFilter();
-  render();
+  switchTab("map");
 }).catch(err => {
   document.getElementById("count").textContent = "Error loading data";
   console.error(err);
