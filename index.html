@@ -33,27 +33,10 @@
   header h1 { font-size: 18px; font-weight: 600; }
   header span { font-size: 13px; opacity: 0.5; }
 
-  .tabs {
+  .split-view {
     display: flex;
-    gap: 4px;
-  }
-
-  .tab-btn {
-    padding: 6px 14px;
-    border-radius: 6px;
-    border: 1px solid #2d3748;
-    background: transparent;
-    color: #94a3b8;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.15s;
-  }
-
-  .tab-btn.active {
-    background: #4f7ef7;
-    border-color: #4f7ef7;
-    color: white;
+    flex: 1;
+    overflow: hidden;
   }
 
   .controls {
@@ -180,7 +163,9 @@
   /* TABLE VIEW */
   #table-view {
     overflow-y: auto;
-    flex: 1;
+    width: 50%;
+    flex-shrink: 0;
+    border-right: 1px solid #2d3748;
   }
 
   .table-wrap {
@@ -289,7 +274,7 @@
   /* MAP VIEW */
   #map-view {
     flex: 1;
-    display: none;
+    display: flex;
     position: relative;
   }
 
@@ -405,13 +390,7 @@
       <h1>Customer Advisory Panels</h1>
       </div>
   </div>
-  <div style="display:flex;align-items:center;gap:20px">
-    <div id="beta-count" style="font-size:13px;color:#94a3b8;text-align:right;line-height:1.4"></div>
-    <div class="tabs">
-      <button class="tab-btn" id="tab-table" onclick="switchTab('table')">Table</button>
-      <button class="tab-btn active" id="tab-map" onclick="switchTab('map')">Map</button>
-    </div>
-  </div>
+  <div id="beta-count" style="font-size:13px;color:#94a3b8;text-align:right;line-height:1.4"></div>
 </header>
 
 <div class="controls">
@@ -456,29 +435,28 @@
   <div class="count" id="count"></div>
 </div>
 
-<div id="table-view">
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th data-col="Name">Name <span class="sort-icon">↕</span></th>
-          <th data-col="Company Name">Company <span class="sort-icon">↕</span></th>
-          <th data-col="Email">Email</th>
-          <th data-col="Engagement">Status <span class="sort-icon">↕</span></th>
-          <th data-col="Tags">Tags</th>
-          <th data-col="Notes">Notes</th>
-          <th data-col="location">Location <span class="sort-icon">↕</span></th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <div class="empty" id="empty" style="display:none">No results found.</div>
+<div class="split-view">
+  <div id="table-view">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-col="Name">Name <span class="sort-icon">↕</span></th>
+            <th data-col="Company Name">Company <span class="sort-icon">↕</span></th>
+            <th data-col="Engagement">Status <span class="sort-icon">↕</span></th>
+            <th data-col="location">Location <span class="sort-icon">↕</span></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none">No results found.</div>
+    </div>
   </div>
-</div>
 
-<div id="map-view">
-  <div id="map"></div>
-  <div class="map-notice" id="map-notice"></div>
+  <div id="map-view">
+    <div id="map"></div>
+    <div class="map-notice" id="map-notice"></div>
+  </div>
 </div>
 
 <script>
@@ -508,7 +486,6 @@ let sortCol = "Name";
 let sortDir = 1;
 let map = null;
 let markers = [];
-let currentTab = "map";
 
 async function fetchAll() {
   let records = [];
@@ -602,47 +579,32 @@ function render() {
 
   document.getElementById("count").textContent = `${filtered.length} of ${allRecords.length} members`;
 
-  if (currentTab === "map") {
-    renderMap(filtered);
-    return;
-  }
-
+  // Render table
   const tbody = document.getElementById("tbody");
   const empty = document.getElementById("empty");
 
   if (filtered.length === 0) {
     tbody.innerHTML = "";
     empty.style.display = "block";
-    return;
+  } else {
+    empty.style.display = "none";
+    tbody.innerHTML = filtered.map(r => {
+      const f = r.fields;
+      const eng = f.Engagement || "";
+      const loc = [f.City, f.State].filter(Boolean).join(", ");
+      return `<tr>
+        <td>
+          <div class="name">${highlight(f.Name || "", query)}</div>
+          <div class="company" style="font-size:12px">${highlight(f["Company Name"] || "", query)}</div>
+        </td>
+        <td><span class="badge ${badgeClass(eng)}">${esc(eng) || "—"}</span></td>
+        <td class="location">${highlight(loc, query)}</td>
+      </tr>`;
+    }).join("");
   }
-  empty.style.display = "none";
 
-  tbody.innerHTML = filtered.map(r => {
-    const f = r.fields;
-    const eng = f.Engagement || "";
-    const tags = (f.Tags || []);
-    const notes = f.Notes || "";
-    const loc = [f.City, f.State].filter(Boolean).join(", ");
-    const id = r.id;
-
-    return `<tr>
-      <td>
-        <div class="name">${highlight(f.Name || "", query)}</div>
-        ${f["Builder ID"] ? `<div class="builder-id">#${esc(f["Builder ID"])}</div>` : ""}
-      </td>
-      <td class="company">${highlight(f["Company Name"] || "", query)}</td>
-      <td class="email">${f.Email ? `<a href="mailto:${esc(f.Email)}">${highlight(f.Email, query)}</a>` : ""}</td>
-      <td><span class="badge ${badgeClass(eng)}">${esc(eng) || "—"}</span></td>
-      <td>${tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</td>
-      <td class="notes-cell">
-        ${notes ? `
-          <div class="notes-text" id="notes-${id}" onclick="toggleNote('${id}')">${highlight(notes, query)}</div>
-          <span class="notes-toggle" onclick="toggleNote('${id}')">show more</span>
-        ` : ""}
-      </td>
-      <td class="location">${highlight(loc, query)}</td>
-    </tr>`;
-  }).join("");
+  // Render map
+  if (map) renderMap(filtered);
 }
 
 function renderMap(filtered) {
@@ -720,24 +682,13 @@ function renderMap(filtered) {
   }
 }
 
-function switchTab(tab) {
-  currentTab = tab;
-  document.getElementById("tab-table").classList.toggle("active", tab === "table");
-  document.getElementById("tab-map").classList.toggle("active", tab === "map");
-  document.getElementById("table-view").style.display = tab === "table" ? "block" : "none";
-  document.getElementById("map-view").style.display = tab === "map" ? "flex" : "none";
-
-  if (tab === "map") {
-    if (!map) {
-      map = L.map("map", { zoomControl: true }).setView([38, -96], 4);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap contributors"
-      }).addTo(map);
-    }
-    setTimeout(() => { map.invalidateSize(); renderMap(getFiltered()); }, 50);
-  } else {
-    render();
-  }
+function initMap() {
+  if (map) return;
+  map = L.map("map", { zoomControl: true }).setView([38, -96], 4);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors"
+  }).addTo(map);
+  setTimeout(() => { map.invalidateSize(); renderMap(getFiltered()); }, 50);
 }
 
 function toggleNote(id) {
@@ -813,7 +764,8 @@ fetchAll().then(records => {
     `<span style="color:#e2e8f0;font-weight:600">${live + async_}</span> Mobile App Beta Members` +
     `<br><span style="font-size:11px">${live} Live · ${async_} Async</span>`;
   populateStateFilter();
-  switchTab("map");
+  initMap();
+  render();
 }).catch(err => {
   document.getElementById("count").textContent = "Error loading data";
   console.error(err);
