@@ -443,8 +443,8 @@
           <tr>
             <th data-col="Name">Name <span class="sort-icon">↕</span></th>
             <th data-col="Company Name">Company <span class="sort-icon">↕</span></th>
-            <th data-col="Engagement">Status <span class="sort-icon">↕</span></th>
             <th data-col="location">Location <span class="sort-icon">↕</span></th>
+            <th data-col="Engagement">Status <span class="sort-icon">↕</span></th>
           </tr>
         </thead>
         <tbody id="tbody"></tbody>
@@ -597,8 +597,8 @@ function render() {
           <div class="name">${highlight(f.Name || "", query)}</div>
           <div class="company" style="font-size:12px">${highlight(f["Company Name"] || "", query)}</div>
         </td>
-        <td><span class="badge ${badgeClass(eng)}">${esc(eng) || "—"}</span></td>
         <td class="location">${highlight(loc, query)}</td>
+        <td><span class="badge ${badgeClass(eng)}">${esc(eng) || "—"}</span></td>
       </tr>`;
     }).join("");
   }
