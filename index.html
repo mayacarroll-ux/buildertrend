@@ -701,6 +701,12 @@ function initMap() {
   requestAnimationFrame(() => requestAnimationFrame(() => {
     map.invalidateSize();
     renderMap(getFiltered());
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        pos => map.setView([pos.coords.latitude, pos.coords.longitude], 8),
+        () => {} // silently fall back to US default if denied
+      );
+    }
   }));
 }
 
