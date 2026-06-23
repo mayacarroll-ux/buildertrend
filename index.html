@@ -112,6 +112,64 @@
 
   select:focus { border-color: #4f7ef7; }
 
+  .multi-select {
+    position: relative;
+  }
+
+  .multi-select-btn {
+    padding: 8px 10px;
+    border: 1px solid #2d3748;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #0f1117;
+    color: #e2e8f0;
+    cursor: pointer;
+    outline: none;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+
+  .multi-select-btn:focus, .multi-select-btn.open { border-color: #4f7ef7; }
+
+  .multi-select-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: #1a1f2e;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    z-index: 999;
+    min-width: 170px;
+    padding: 6px 0;
+  }
+
+  .multi-select-dropdown.open { display: block; }
+
+  .multi-select-dropdown label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #e2e8f0;
+    transition: background 0.1s;
+  }
+
+  .multi-select-dropdown label:hover { background: #1e2a3a; }
+
+  .multi-select-dropdown input[type="checkbox"] {
+    accent-color: #4f7ef7;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+
   .count {
     margin-left: auto;
     color: #4b5563;
@@ -364,13 +422,18 @@
     <input type="search" id="search" placeholder="Search name, company, email, notes…" autofocus>
   </div>
 
-  <select id="engagementFilter">
-    <option value="">All Engagement</option>
-    <option value="Live Member">Live Member</option>
-    <option value="Async Member">Async Member</option>
-    <option value="Lead">Lead</option>
-    <option value="Unsubscribe">Unsubscribe</option>
-  </select>
+  <div class="multi-select" id="engagementMulti">
+    <div class="multi-select-btn" id="engagementBtn" tabindex="0">
+      <span id="engagementLabel">All Engagement</span>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+    </div>
+    <div class="multi-select-dropdown" id="engagementDropdown">
+      <label><input type="checkbox" value="Live Member"> Live Member</label>
+      <label><input type="checkbox" value="Async Member"> Async Member</label>
+      <label><input type="checkbox" value="Lead"> Lead</label>
+      <label><input type="checkbox" value="Unsubscribe"> Unsubscribe</label>
+    </div>
+  </div>
 
   <select id="tagFilter">
     <option value="">All Tags</option>
@@ -507,14 +570,14 @@ function populateStateFilter() {
 
 function getFiltered() {
   const query = document.getElementById("search").value.trim().toLowerCase();
-  const engFilter = document.getElementById("engagementFilter").value;
+  const engFilter = getEngagementSelected();
   const tagFilter = document.getElementById("tagFilter").value;
   const countryFilter = document.getElementById("countryFilter").value;
   const stateFilter = document.getElementById("stateFilter").value;
 
   return allRecords.filter(r => {
     const f = r.fields;
-    if (engFilter && f.Engagement !== engFilter) return false;
+    if (engFilter.length && !engFilter.includes(f.Engagement)) return false;
     if (tagFilter && !(f.Tags || []).includes(tagFilter)) return false;
     if (countryFilter && inferCountry((f.State || "").trim()) !== countryFilter) return false;
     if (stateFilter && (f.State || "").trim() !== stateFilter) return false;
@@ -690,7 +753,38 @@ function toggleNote(id) {
 }
 
 document.getElementById("search").addEventListener("input", render);
-document.getElementById("engagementFilter").addEventListener("change", render);
+// Multi-select engagement dropdown
+const engBtn = document.getElementById("engagementBtn");
+const engDropdown = document.getElementById("engagementDropdown");
+const engCheckboxes = engDropdown.querySelectorAll("input[type=checkbox]");
+
+engBtn.addEventListener("click", () => {
+  const open = engDropdown.classList.toggle("open");
+  engBtn.classList.toggle("open", open);
+});
+
+document.addEventListener("click", e => {
+  if (!document.getElementById("engagementMulti").contains(e.target)) {
+    engDropdown.classList.remove("open");
+    engBtn.classList.remove("open");
+  }
+});
+
+function getEngagementSelected() {
+  return Array.from(engCheckboxes).filter(c => c.checked).map(c => c.value);
+}
+
+function updateEngagementLabel() {
+  const sel = getEngagementSelected();
+  document.getElementById("engagementLabel").textContent =
+    sel.length === 0 ? "All Engagement" :
+    sel.length === 1 ? sel[0] :
+    `${sel.length} selected`;
+}
+
+engCheckboxes.forEach(cb => {
+  cb.addEventListener("change", () => { updateEngagementLabel(); render(); });
+});
 document.getElementById("tagFilter").addEventListener("change", render);
 document.getElementById("countryFilter").addEventListener("change", () => {
   document.getElementById("stateFilter").value = "";
