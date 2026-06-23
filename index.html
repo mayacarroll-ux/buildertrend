@@ -692,11 +692,10 @@ function initMap() {
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors"
   }).addTo(map);
-  setTimeout(() => {
+  requestAnimationFrame(() => requestAnimationFrame(() => {
     map.invalidateSize();
     renderMap(getFiltered());
-    // After rendering, fitBounds is already called inside renderMap
-  }, 100);
+  }));
 }
 
 function toggleNote(id) {
