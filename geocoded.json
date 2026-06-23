@@ -1,0 +1,706 @@
+{
+  "Virginia Beach, VA": {
+    "lat": 36.8496579,
+    "lon": -75.9760751
+  },
+  "Savannah, GA": {
+    "lat": 32.0790074,
+    "lon": -81.0921335
+  },
+  "Charlotte, NC": {
+    "lat": 35.2272086,
+    "lon": -80.8430827
+  },
+  "Islamorada, FL": {
+    "lat": 24.9236561,
+    "lon": -80.6291479
+  },
+  "Hilton Head Island, SC": {
+    "lat": 32.1618488,
+    "lon": -80.7512616
+  },
+  "Greenville, SC": {
+    "lat": 34.851354,
+    "lon": -82.3984882
+  },
+  "De Pere, WI": {
+    "lat": 44.4493584,
+    "lon": -88.0599986
+  },
+  "Atlanta, GA": {
+    "lat": 33.7544657,
+    "lon": -84.3898151
+  },
+  "Sarasota, FL": {
+    "lat": 27.3365805,
+    "lon": -82.5308545
+  },
+  "Fridley, MN": {
+    "lat": 45.0838291,
+    "lon": -93.2590388
+  },
+  "Olivette, MO": {
+    "lat": 38.6653297,
+    "lon": -90.3759499
+  },
+  "Seattle, WA": {
+    "lat": 47.6038321,
+    "lon": -122.330062
+  },
+  "Greenville, NC": {
+    "lat": 35.613224,
+    "lon": -77.3724593
+  },
+  "Mercer Island, WA": {
+    "lat": 47.5766324,
+    "lon": -122.2276378
+  },
+  "University Pl, WA": {
+    "lat": 47.2258172,
+    "lon": -122.5371325
+  },
+  "Houston, TX": {
+    "lat": 29.7589382,
+    "lon": -95.3676974
+  },
+  "Waukesha, WI": {
+    "lat": 43.0622536,
+    "lon": -88.3123889
+  },
+  "Suffolk, PE": {
+    "lat": 46.3317395,
+    "lon": -63.0643844
+  },
+  "Holly, MI": {
+    "lat": 42.7919727,
+    "lon": -83.6277255
+  },
+  "Omaha, NE": {
+    "lat": 41.2587459,
+    "lon": -95.9383758
+  },
+  "Nevis, MN": {
+    "lat": 46.9651482,
+    "lon": -94.8395533
+  },
+  "Evergreen, CO": {
+    "lat": 39.6361637,
+    "lon": -105.321458
+  },
+  "Chicago, IL": {
+    "lat": 41.8755616,
+    "lon": -87.6244212
+  },
+  "VIC": {
+    "lat": 41.9302021,
+    "lon": 2.2545943
+  },
+  "Sugar Land, TX": {
+    "lat": 29.6196787,
+    "lon": -95.6349463
+  },
+  "Pasadena, CA": {
+    "lat": 34.1476507,
+    "lon": -118.144155
+  },
+  "Dexter, MI": {
+    "lat": 42.3372998,
+    "lon": -83.8842
+  },
+  "Jersey Village, TX": {
+    "lat": 29.888578,
+    "lon": -95.5699185
+  },
+  "Providenciales": {
+    "lat": 21.8020614,
+    "lon": -72.3004456
+  },
+  "Pilot Point, TX": {
+    "lat": 33.3959396,
+    "lon": -96.9591054
+  },
+  "Tyler, TX": {
+    "lat": 32.3512601,
+    "lon": -95.3010624
+  },
+  "Indian Trail, NC": {
+    "lat": 35.0768141,
+    "lon": -80.6692352
+  },
+  "Minnetonka, MN": {
+    "lat": 44.9405086,
+    "lon": -93.4638936
+  },
+  "Lancaster, PA": {
+    "lat": 40.0379958,
+    "lon": -76.3056707
+  },
+  "Whistler, BC": {
+    "lat": 50.1171903,
+    "lon": -122.9543022
+  },
+  "Plymouth, MI": {
+    "lat": 42.3712,
+    "lon": -83.4675021
+  },
+  "Key West, FL": {
+    "lat": 24.5548262,
+    "lon": -81.8020722
+  },
+  "Westmount, QC": {
+    "lat": 45.4856917,
+    "lon": -73.596562
+  },
+  "Emporia, VA": {
+    "lat": 36.6937606,
+    "lon": -77.5357141
+  },
+  "Escondido, CA": {
+    "lat": 33.1216751,
+    "lon": -117.0814849
+  },
+  "Albany, OR": {
+    "lat": 44.6365071,
+    "lon": -123.1059324
+  },
+  "Anchorage, AK": {
+    "lat": 61.2163129,
+    "lon": -149.894852
+  },
+  "Arcanum, OH": {
+    "lat": 39.9900504,
+    "lon": -84.553286
+  },
+  "Asheville, NC": {
+    "lat": 35.595363,
+    "lon": -82.5508407
+  },
+  "Auburn, WA": {
+    "lat": 47.3075369,
+    "lon": -122.2301808
+  },
+  "Austin, TX": {
+    "lat": 30.2711286,
+    "lon": -97.7436995
+  },
+  "Banner Elk, NC": {
+    "lat": 36.1633342,
+    "lon": -81.8719013
+  },
+  "Baton Rouge, LA": {
+    "lat": 30.4494155,
+    "lon": -91.1869659
+  },
+  "Belfair, WA": {
+    "lat": 47.444531,
+    "lon": -122.8530464
+  },
+  "Belgrade, MT": {
+    "lat": 45.776288,
+    "lon": -111.1771685
+  },
+  "Bethesda, MD": {
+    "lat": 38.9812726,
+    "lon": -77.1233587
+  },
+  "Birmingham, AL": {
+    "lat": 33.5206824,
+    "lon": -86.8024326
+  },
+  "Bonita Springs, FL": {
+    "lat": 26.339806,
+    "lon": -81.7786972
+  },
+  "Bossier City, LA": {
+    "lat": 32.515887,
+    "lon": -93.7336536
+  },
+  "Bozeman, MT": {
+    "lat": 45.6794293,
+    "lon": -111.044047
+  },
+  "Brenham, TX": {
+    "lat": 30.1668828,
+    "lon": -96.3977442
+  },
+  "Broadview Heights, OH": {
+    "lat": 41.3139426,
+    "lon": -81.6851271
+  },
+  "Broken Arrow, OK": {
+    "lat": 36.0525993,
+    "lon": -95.7908195
+  },
+  "Brooklyn, NY": {
+    "lat": 40.6526006,
+    "lon": -73.9497211
+  },
+  "Brunswick, VIC": {
+    "lat": -37.7664715,
+    "lon": 144.9613103
+  },
+  "CENTERVILLE, UT": {
+    "lat": 40.9180005,
+    "lon": -111.8721601
+  },
+  "Calgary, AB": {
+    "lat": 51.0447331,
+    "lon": -114.0718831
+  },
+  "Campbell, CA": {
+    "lat": 37.2870626,
+    "lon": -121.944881
+  },
+  "Cape Charles, VA": {
+    "lat": 37.2671674,
+    "lon": -76.0176986
+  },
+  "Carlsbad, CA": {
+    "lat": 33.1580933,
+    "lon": -117.3505966
+  },
+  "Castle Rock, CO": {
+    "lat": 39.3722552,
+    "lon": -104.858682
+  },
+  "Cedar Hill, MO": {
+    "lat": 38.357791,
+    "lon": -90.6314344
+  },
+  "Center Moriches, NY": {
+    "lat": 40.800558,
+    "lon": -72.7933405
+  },
+  "Cincinnati, OH": {
+    "lat": 39.1012809,
+    "lon": -84.5127405
+  },
+  "Clermont, FL": {
+    "lat": 28.5551912,
+    "lon": -81.7669488
+  },
+  "Dallas, TX": {
+    "lat": 32.7762719,
+    "lon": -96.7968559
+  },
+  "Delafield, WI": {
+    "lat": 43.0594237,
+    "lon": -88.4040172
+  },
+  "Driggs, ID": {
+    "lat": 43.7231753,
+    "lon": -111.110887
+  },
+  "Dripping Springs, TX": {
+    "lat": 30.1902067,
+    "lon": -98.0866781
+  },
+  "Durham, NC": {
+    "lat": 35.996653,
+    "lon": -78.9018053
+  },
+  "Eagle River, AK": {
+    "lat": 61.2700284,
+    "lon": -149.3863924
+  },
+  "Eau Claire, WI": {
+    "lat": 44.811349,
+    "lon": -91.4984941
+  },
+  "Edmonton, AB": {
+    "lat": 53.5461245,
+    "lon": -113.4938229
+  },
+  "Elbert, CO": {
+    "lat": 39.3138822,
+    "lon": -104.0868973
+  },
+  "Englewood, CO": {
+    "lat": 39.6482059,
+    "lon": -104.9879641
+  },
+  "Felton, DE": {
+    "lat": 39.0084464,
+    "lon": -75.5779807
+  },
+  "Fort Myers, FL": {
+    "lat": 26.640628,
+    "lon": -81.8723084
+  },
+  "Fort Wayne, IN": {
+    "lat": 41.0799898,
+    "lon": -85.1386015
+  },
+  "Foxboro, ON": {
+    "lat": 44.3667,
+    "lon": -77.4167
+  },
+  "Freeland, WA": {
+    "lat": 48.018148,
+    "lon": -122.5154662
+  },
+  "Gainesville, FL": {
+    "lat": 29.6519684,
+    "lon": -82.3249846
+  },
+  "Germantown, TN": {
+    "lat": 35.0867577,
+    "lon": -89.8100858
+  },
+  "Glen Burnie, MD": {
+    "lat": 39.1595439,
+    "lon": -76.6151514
+  },
+  "Grandville, MI": {
+    "lat": 42.909598,
+    "lon": -85.7630956
+  },
+  "Greensboro, NC": {
+    "lat": 36.0726355,
+    "lon": -79.7919754
+  },
+  "HONOLULU, HI": {
+    "lat": 21.304547,
+    "lon": -157.855676
+  },
+  "Hammonton, NJ": {
+    "lat": 39.6366543,
+    "lon": -74.8027651
+  },
+  "Henrico, VA": {
+    "lat": 37.5131191,
+    "lon": -77.3465081
+  },
+  "Hixson, TN": {
+    "lat": 35.1406267,
+    "lon": -85.2327349
+  },
+  "Holland, MI": {
+    "lat": 42.7876022,
+    "lon": -86.1090828
+  },
+  "Jackson Hole, WY": {
+    "lat": 43.6087926,
+    "lon": -110.7380325
+  },
+  "Jacksonville, FL": {
+    "lat": 30.3262247,
+    "lon": -81.6579179
+  },
+  "Janesville, WI": {
+    "lat": 42.6829765,
+    "lon": -89.0226793
+  },
+  "Johnson Creek, WI": {
+    "lat": 43.0759165,
+    "lon": -88.774837
+  },
+  "Kaysville, UT": {
+    "lat": 41.0349847,
+    "lon": -111.9383931
+  },
+  "Kelowna, BC": {
+    "lat": 49.8879567,
+    "lon": -119.4961437
+  },
+  "Key Largo, FL": {
+    "lat": 25.109291,
+    "lon": -80.424016
+  },
+  "Kingston, ON": {
+    "lat": 44.2333,
+    "lon": -76.4833
+  },
+  "Lakeville, MA": {
+    "lat": 41.8459353,
+    "lon": -70.9494854
+  },
+  "Lansdale, PA": {
+    "lat": 40.2414952,
+    "lon": -75.2837862
+  },
+  "Largo, FL": {
+    "lat": 27.9094665,
+    "lon": -82.7873244
+  },
+  "Las Vegas, NV": {
+    "lat": 36.1674263,
+    "lon": -115.1484131
+  },
+  "Leander, TX": {
+    "lat": 30.5736134,
+    "lon": -97.8567339
+  },
+  "Lehi, UT": {
+    "lat": 40.3881114,
+    "lon": -111.8486019
+  },
+  "Lincoln, NE": {
+    "lat": 40.8088861,
+    "lon": -96.7077751
+  },
+  "Long Beach, CA": {
+    "lat": 33.7690164,
+    "lon": -118.191604
+  },
+  "Loudonville, OH": {
+    "lat": 40.6356208,
+    "lon": -82.2334709
+  },
+  "Manhattan, KS": {
+    "lat": 39.1836082,
+    "lon": -96.5716694
+  },
+  "Manlius, NY": {
+    "lat": 43.0020107,
+    "lon": -75.9768632
+  },
+  "Maryland Heights, MO": {
+    "lat": 38.7150511,
+    "lon": -90.435999
+  },
+  "Melrose, MA": {
+    "lat": 42.4564323,
+    "lon": -71.064182
+  },
+  "Milton, MA": {
+    "lat": 42.2501425,
+    "lon": -71.065573
+  },
+  "Monroe, NC": {
+    "lat": 34.9854275,
+    "lon": -80.5495112
+  },
+  "Morgan Hill, CA": {
+    "lat": 37.130408,
+    "lon": -121.6544974
+  },
+  "Mount Joy, PA": {
+    "lat": 40.1098561,
+    "lon": -76.5033406
+  },
+  "Nashville, TN": {
+    "lat": 36.1622767,
+    "lon": -86.7742984
+  },
+  "Niles, MI": {
+    "lat": 41.8297694,
+    "lon": -86.2541768
+  },
+  "Niwot, CO": {
+    "lat": 40.1016754,
+    "lon": -105.1534902
+  },
+  "North Royalton, OH": {
+    "lat": 41.3136644,
+    "lon": -81.7245739
+  },
+  "North Vancouver, BC": {
+    "lat": 49.3198629,
+    "lon": -123.0737681
+  },
+  "Oakleigh South, VIC": {
+    "lat": -37.9248257,
+    "lon": 145.0921745
+  },
+  "Ocala, FL": {
+    "lat": 29.1871986,
+    "lon": -82.1400923
+  },
+  "Orange Park, FL": {
+    "lat": 30.1654707,
+    "lon": -81.7016346
+  },
+  "PARK CITY, UT": {
+    "lat": 40.6460921,
+    "lon": -111.4979963
+  },
+  "Pawleys Island, SC": {
+    "lat": 33.4293486,
+    "lon": -79.1215912
+  },
+  "Peoria, AZ": {
+    "lat": 33.5806115,
+    "lon": -112.237294
+  },
+  "Phoenix, AZ": {
+    "lat": 33.4484367,
+    "lon": -112.074141
+  },
+  "Pooler, GA": {
+    "lat": 32.1158983,
+    "lon": -81.2495131
+  },
+  "Poolesville, MD": {
+    "lat": 39.146088,
+    "lon": -77.4166561
+  },
+  "Poulsbo, WA": {
+    "lat": 47.7391366,
+    "lon": -122.63928
+  },
+  "Prattville, AL": {
+    "lat": 32.4600136,
+    "lon": -86.4753174
+  },
+  "Prescott Valley, AZ": {
+    "lat": 34.5950776,
+    "lon": -112.3338634
+  },
+  "Providenciales, Provo": {
+    "lat": 21.8038702,
+    "lon": -72.1560143
+  },
+  "Raleigh, NC": {
+    "lat": 35.7803977,
+    "lon": -78.6390989
+  },
+  "Redwood City, CA": {
+    "lat": 37.4863239,
+    "lon": -122.232523
+  },
+  "Richmond, IL": {
+    "lat": 42.4758522,
+    "lon": -88.3059251
+  },
+  "Riverside, MO": {
+    "lat": 39.1775032,
+    "lon": -94.6130121
+  },
+  "Roberts Creek, BC": {
+    "lat": 49.6497,
+    "lon": -123.6592
+  },
+  "Rockvale, TN": {
+    "lat": 35.7576331,
+    "lon": -86.5312318
+  },
+  "Saint Petersburg, FL": {
+    "lat": 27.7712264,
+    "lon": -82.6340259
+  },
+  "Salt Lake City, UT": {
+    "lat": 40.7596198,
+    "lon": -111.886797
+  },
+  "San Diego, CA": {
+    "lat": 32.7174202,
+    "lon": -117.162772
+  },
+  "San Francisco, CA": {
+    "lat": 37.7879363,
+    "lon": -122.4075201
+  },
+  "Santa Ana, CA": {
+    "lat": 33.7494951,
+    "lon": -117.873221
+  },
+  "Santee, CA": {
+    "lat": 32.8383828,
+    "lon": -116.9739167
+  },
+  "Scottsdale, AZ": {
+    "lat": 33.4942189,
+    "lon": -111.926018
+  },
+  "Shawnee, KS": {
+    "lat": 39.0273676,
+    "lon": -95.7627535
+  },
+  "Six Lakes, MI": {
+    "lat": 43.4302845,
+    "lon": -85.1453745
+  },
+  "Snowmass Village, CO": {
+    "lat": 39.2130418,
+    "lon": -106.9378207
+  },
+  "South Ogden, UT": {
+    "lat": 41.1912782,
+    "lon": -111.9678627
+  },
+  "Spokane, WA": {
+    "lat": 47.6571934,
+    "lon": -117.42351
+  },
+  "St. Joseph, MO": {
+    "lat": 39.7686055,
+    "lon": -94.8466322
+  },
+  "Steamboat Springs, CO": {
+    "lat": 40.4848003,
+    "lon": -106.831735
+  },
+  "Sunset, SC": {
+    "lat": 34.9776127,
+    "lon": -82.7990259
+  },
+  "The Woodlands, TX": {
+    "lat": 30.1734194,
+    "lon": -95.504686
+  },
+  "Toronto, ONT": {
+    "lat": 43.6534817,
+    "lon": -79.3839347
+  },
+  "Troy, MI": {
+    "lat": 42.6055893,
+    "lon": -83.1499304
+  },
+  "Vancouver, BC": {
+    "lat": 49.2608724,
+    "lon": -123.1139529
+  },
+  "Vashon, WA": {
+    "lat": 47.4208759,
+    "lon": -122.4737053
+  },
+  "Victor, ID": {
+    "lat": 43.6025939,
+    "lon": -111.111309
+  },
+  "Waukee, IA": {
+    "lat": 41.6118485,
+    "lon": -93.8845129
+  },
+  "Weatherford, TX": {
+    "lat": 32.7589648,
+    "lon": -97.7970748
+  },
+  "Webb City, MO": {
+    "lat": 37.1435741,
+    "lon": -94.4634702
+  },
+  "Webster, TX": {
+    "lat": 29.5351724,
+    "lon": -95.1161564
+  },
+  "West Gosford, NSW": {
+    "lat": -33.415,
+    "lon": 151.3177778
+  },
+  "West Lafayette, IN": {
+    "lat": 40.4258686,
+    "lon": -86.9080655
+  },
+  "Westhampton Beach, NY": {
+    "lat": 40.8101459,
+    "lon": -72.6413756
+  },
+  "Willow Grove, PA": {
+    "lat": 40.1507046,
+    "lon": -75.1162306
+  },
+  "Wilmington, NC": {
+    "lat": 34.2352853,
+    "lon": -77.9487284
+  },
+  "Wyoming, MN": {
+    "lat": 45.3363551,
+    "lon": -92.9971631
+  },
+  "York, PA": {
+    "lat": 39.962493,
+    "lon": -76.7276989
+  }
+}
