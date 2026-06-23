@@ -38,16 +38,33 @@
     border-bottom: 1px solid #2d3748;
     padding: 10px 16px;
     display: flex;
+    flex-direction: column;
     gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
     flex-shrink: 0;
   }
+
+  .controls-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .controls-filters {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+  }
+
+  .controls-filters::-webkit-scrollbar { display: none; }
 
   .search-wrap {
     position: relative;
     flex: 1;
-    min-width: 180px;
+    min-width: 0;
   }
 
   .search-wrap svg {
@@ -237,15 +254,15 @@
   .highlight { background: #713f12; color: #fde68a; border-radius: 2px; }
   .empty { text-align: center; padding: 40px 16px; color: #374151; font-size: 13px; }
 
-  /* Mobile view toggle */
+  /* Mobile view toggle — hidden on desktop */
   .mobile-tabs {
     display: none;
     gap: 4px;
+    flex-shrink: 0;
   }
 
   .mobile-tab-btn {
-    flex: 1;
-    padding: 7px;
+    padding: 7px 12px;
     border: 1px solid #2d3748;
     border-radius: 8px;
     background: transparent;
@@ -254,6 +271,7 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s;
+    white-space: nowrap;
   }
 
   .mobile-tab-btn.active {
@@ -268,10 +286,8 @@
     header h1 { font-size: 15px; }
     #beta-count { display: none; }
 
-    .controls { padding: 8px 12px; gap: 6px; }
-    .search-wrap { min-width: 100%; order: -1; }
-    .count { font-size: 11px; }
-    .mobile-tabs { display: flex; width: 100%; }
+    .controls { padding: 8px 12px; }
+    .mobile-tabs { display: flex; }
 
     .split-view { position: relative; }
 
@@ -419,48 +435,47 @@
 </header>
 
 <div class="controls">
-  <div class="search-wrap">
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-    </svg>
-    <input type="search" id="search" placeholder="Search name, company, email, notes…" autofocus>
-  </div>
-
-  <div class="multi-select" id="engagementMulti">
-    <div class="multi-select-btn" id="engagementBtn" tabindex="0">
-      <span id="engagementLabel">All Engagement</span>
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+  <div class="controls-top">
+    <div class="search-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="search" id="search" placeholder="Search name, company, email, notes…" autofocus>
     </div>
-    <div class="multi-select-dropdown" id="engagementDropdown">
-      <label><input type="checkbox" value="Live Member"> Live Member</label>
-      <label><input type="checkbox" value="Async Member"> Async Member</label>
-      <label><input type="checkbox" value="Lead"> Lead</label>
-      <label><input type="checkbox" value="Unsubscribe"> Unsubscribe</label>
+    <div class="mobile-tabs">
+      <button class="mobile-tab-btn active" id="mob-list" onclick="setMobileTab('list')">List</button>
+      <button class="mobile-tab-btn" id="mob-map" onclick="setMobileTab('map')">Map</button>
     </div>
   </div>
-
-  <select id="tagFilter">
-    <option value="">All Tags</option>
-    <option value="EA 1">EA 1</option>
-    <option value="EA 2">EA 2</option>
-  </select>
-
-  <select id="countryFilter">
-    <option value="">All Countries</option>
-    <option value="US">🇺🇸 United States</option>
-    <option value="CA">🇨🇦 Canada</option>
-    <option value="AU">🇦🇺 Australia</option>
-    <option value="Other">🌐 Other</option>
-  </select>
-
-  <select id="stateFilter">
-    <option value="">All States/Provinces</option>
-  </select>
-
-  <div class="count" id="count"></div>
-  <div class="mobile-tabs">
-    <button class="mobile-tab-btn active" id="mob-list" onclick="setMobileTab('list')">☰ List</button>
-    <button class="mobile-tab-btn" id="mob-map" onclick="setMobileTab('map')">⊙ Map</button>
+  <div class="controls-filters">
+    <div class="multi-select" id="engagementMulti">
+      <div class="multi-select-btn" id="engagementBtn" tabindex="0">
+        <span id="engagementLabel">All Engagement</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+      </div>
+      <div class="multi-select-dropdown" id="engagementDropdown">
+        <label><input type="checkbox" value="Live Member"> Live Member</label>
+        <label><input type="checkbox" value="Async Member"> Async Member</label>
+        <label><input type="checkbox" value="Lead"> Lead</label>
+        <label><input type="checkbox" value="Unsubscribe"> Unsubscribe</label>
+      </div>
+    </div>
+    <select id="tagFilter">
+      <option value="">All Tags</option>
+      <option value="EA 1">EA 1</option>
+      <option value="EA 2">EA 2</option>
+    </select>
+    <select id="countryFilter">
+      <option value="">All Countries</option>
+      <option value="US">🇺🇸 United States</option>
+      <option value="CA">🇨🇦 Canada</option>
+      <option value="AU">🇦🇺 Australia</option>
+      <option value="Other">🌐 Other</option>
+    </select>
+    <select id="stateFilter">
+      <option value="">All States/Provinces</option>
+    </select>
+    <div class="count" id="count"></div>
   </div>
 </div>
 
