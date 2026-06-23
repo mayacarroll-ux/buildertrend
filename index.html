@@ -1312,7 +1312,7 @@ async function submitMember() {
     btn.textContent = "Add Member";
     setTimeout(() => { resetForm(); closeDrawer(); }, 1500);
   } catch(e) {
-    msg.textContent = "Failed to add member. Please try again.";
+    msg.textContent = "Error: " + e.message;
     msg.className = "form-msg error"; msg.style.display = "block";
     btn.disabled = false;
     btn.textContent = "Add Member";
