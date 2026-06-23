@@ -510,6 +510,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-top: 4px;
+    margin-bottom: -2px;
   }
 
   .form-divider::before, .form-divider::after {
@@ -672,7 +674,7 @@
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
   </div>
   <div class="drawer-body">
-    <div id="form-msg" class="form-msg"></div>
+    <div id="form-msg" class="form-msg" style="display:none"></div>
 
     <div class="form-group">
       <label>Name <span class="req">*</span></label>
@@ -1173,8 +1175,8 @@ function openDrawer() {
 function closeDrawer() {
   document.getElementById("drawerOverlay").classList.remove("open");
   document.getElementById("drawer").classList.remove("open");
-  document.getElementById("form-msg").className = "form-msg";
-  document.getElementById("form-msg").textContent = "";
+  const msg = document.getElementById("form-msg");
+  msg.className = "form-msg"; msg.textContent = ""; msg.style.display = "none";
 }
 function resetForm() {
   ["f-name","f-company","f-builderid","f-email","f-city","f-state","f-notes"]
@@ -1182,8 +1184,8 @@ function resetForm() {
   document.getElementById("f-country").value = "";
   document.getElementById("f-engagement").value = "";
   document.getElementById("f-tag").value = "";
-  document.getElementById("form-msg").className = "form-msg";
-  document.getElementById("form-msg").textContent = "";
+  const msg = document.getElementById("form-msg");
+  msg.className = "form-msg"; msg.textContent = ""; msg.style.display = "none";
 }
 async function submitMember() {
   const name = document.getElementById("f-name").value.trim();
@@ -1191,7 +1193,7 @@ async function submitMember() {
   const msg = document.getElementById("form-msg");
   if (!name || !company) {
     msg.textContent = "Name and Company Name are required.";
-    msg.className = "form-msg error";
+    msg.className = "form-msg error"; msg.style.display = "block";
     return;
   }
   const btn = document.getElementById("submitBtn");
@@ -1222,7 +1224,7 @@ async function submitMember() {
     });
     if (!res.ok) throw new Error(await res.text());
     msg.textContent = `${name} added successfully!`;
-    msg.className = "form-msg success";
+    msg.className = "form-msg success"; msg.style.display = "block";
     allRecords = await fetchAll();
     populateStateFilter();
     render();
@@ -1231,7 +1233,7 @@ async function submitMember() {
     setTimeout(() => { resetForm(); closeDrawer(); }, 1500);
   } catch(e) {
     msg.textContent = "Failed to add member. Please try again.";
-    msg.className = "form-msg error";
+    msg.className = "form-msg error"; msg.style.display = "block";
     btn.disabled = false;
     btn.textContent = "Add Member";
   }
