@@ -347,9 +347,12 @@
       <h1>Customer Advisory Panels</h1>
       </div>
   </div>
-  <div class="tabs">
-    <button class="tab-btn" id="tab-table" onclick="switchTab('table')">Table</button>
-    <button class="tab-btn active" id="tab-map" onclick="switchTab('map')">Map</button>
+  <div style="display:flex;align-items:center;gap:20px">
+    <div id="beta-count" style="font-size:13px;color:#94a3b8;text-align:right;line-height:1.4"></div>
+    <div class="tabs">
+      <button class="tab-btn" id="tab-table" onclick="switchTab('table')">Table</button>
+      <button class="tab-btn active" id="tab-map" onclick="switchTab('map')">Map</button>
+    </div>
   </div>
 </header>
 
@@ -710,6 +713,11 @@ document.querySelectorAll("thead th[data-col]").forEach(th => {
 
 fetchAll().then(records => {
   allRecords = records;
+  const live = records.filter(r => r.fields.Engagement === "Live Member").length;
+  const async_ = records.filter(r => r.fields.Engagement === "Async Member").length;
+  document.getElementById("beta-count").innerHTML =
+    `<span style="color:#e2e8f0;font-weight:600">${live + async_}</span> Mobile App Beta Members` +
+    `<br><span style="font-size:11px">${live} Live · ${async_} Async</span>`;
   populateStateFilter();
   switchTab("map");
 }).catch(err => {
