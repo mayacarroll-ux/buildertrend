@@ -581,7 +581,7 @@ function render() {
     return va < vb ? -sortDir : va > vb ? sortDir : 0;
   });
 
-  document.getElementById("count").textContent = `${filtered.length} of ${allRecords.length} members`;
+  document.getElementById("count").textContent = `${filtered.length} of ${allRecords.length} results`;
 
   // Render table
   const tbody = document.getElementById("tbody");
