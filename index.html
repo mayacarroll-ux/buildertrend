@@ -393,6 +393,196 @@
     flex-shrink: 0;
   }
 
+  /* ADD MEMBER DRAWER */
+  .drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 2000;
+  }
+
+  .drawer-overlay.open { display: block; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 420px;
+    max-width: 100vw;
+    height: 100%;
+    background: #1a1f2e;
+    border-left: 1px solid #2d3748;
+    z-index: 2001;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    box-shadow: -8px 0 32px rgba(0,0,0,0.4);
+  }
+
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid #2d3748;
+    flex-shrink: 0;
+  }
+
+  .drawer-header h2 { font-size: 16px; font-weight: 600; color: #f1f5f9; }
+
+  .drawer-close {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px;
+  }
+
+  .drawer-close:hover { color: #e2e8f0; }
+
+  .drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+
+  .form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .form-group label .req { color: #f87171; margin-left: 2px; }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: #0f1117;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 14px;
+    padding: 9px 12px;
+    outline: none;
+    width: 100%;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: #4f7ef7;
+    box-shadow: 0 0 0 3px rgba(79,126,247,0.15);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 80px; }
+
+  .form-divider {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .form-divider::before, .form-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #2d3748;
+  }
+
+  .drawer-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #2d3748;
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .btn-primary {
+    flex: 1;
+    padding: 10px;
+    background: #4f7ef7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn-primary:hover { background: #3b6ef0; }
+  .btn-primary:disabled { background: #2d3748; color: #4b5563; cursor: not-allowed; }
+
+  .btn-secondary {
+    padding: 10px 16px;
+    background: transparent;
+    color: #94a3b8;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-secondary:hover { border-color: #4b5563; color: #e2e8f0; }
+
+  .form-msg {
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: none;
+  }
+
+  .form-msg.success { background: #052e16; color: #4ade80; border: 1px solid #14532d; display: block; }
+  .form-msg.error   { background: #1c0a0a; color: #f87171; border: 1px solid #450a0a; display: block; }
+
+  /* Add button in header */
+  .btn-add {
+    padding: 7px 14px;
+    background: #4f7ef7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+
+  .btn-add:hover { background: #3b6ef0; }
+
   /* Map no-location notice */
   .map-notice {
     position: absolute;
@@ -466,12 +656,102 @@
 <header>
   <div style="display:flex;align-items:center;gap:14px">
     <img src="Buildertrend Logo.png" alt="Buildertrend" style="height:28px;object-fit:contain">
-    <div>
-      <h1>Customer Advisory Panels</h1>
-      </div>
+    <h1>Customer Advisory Panels</h1>
   </div>
-  <div id="beta-count" style="font-size:13px;color:#94a3b8;text-align:right;line-height:1.4"></div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <div id="beta-count" style="font-size:13px;color:#94a3b8;text-align:right;line-height:1.4"></div>
+    <button class="btn-add" onclick="openDrawer()">+ Add Member</button>
+  </div>
 </header>
+
+<!-- Add Member Drawer -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <h2>Add Member</h2>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div id="form-msg" class="form-msg"></div>
+
+    <div class="form-group">
+      <label>Name <span class="req">*</span></label>
+      <input type="text" id="f-name" placeholder="Full name">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Company Name <span class="req">*</span></label>
+        <input type="text" id="f-company" placeholder="Company">
+      </div>
+      <div class="form-group">
+        <label>Builder ID</label>
+        <input type="text" id="f-builderid" placeholder="e.g. 110046">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="f-email" placeholder="email@example.com">
+    </div>
+
+    <div class="form-divider">Location</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" id="f-city" placeholder="City">
+      </div>
+      <div class="form-group">
+        <label>State / Province</label>
+        <input type="text" id="f-state" placeholder="e.g. NE">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Country</label>
+      <select id="f-country">
+        <option value="">Select country</option>
+        <option value="US">🇺🇸 United States</option>
+        <option value="CA">🇨🇦 Canada</option>
+        <option value="AU">🇦🇺 Australia</option>
+        <option value="Other">🌐 Other</option>
+      </select>
+    </div>
+
+    <div class="form-divider">Details</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Engagement</label>
+        <select id="f-engagement">
+          <option value="">Select status</option>
+          <option value="Lead">Lead</option>
+          <option value="Live Member">Live Member</option>
+          <option value="Async Member">Async Member</option>
+          <option value="Unsubscribe">Unsubscribe</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tag</label>
+        <select id="f-tag">
+          <option value="">No tag</option>
+          <option value="EA 1">EA 1</option>
+          <option value="EA 2">EA 2</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Notes</label>
+      <textarea id="f-notes" placeholder="Any additional notes…"></textarea>
+    </div>
+  </div>
+  <div class="drawer-footer">
+    <button class="btn-secondary" onclick="resetForm()">Clear</button>
+    <button class="btn-primary" id="submitBtn" onclick="submitMember()">Add Member</button>
+  </div>
+</div>
 
 <div class="controls">
   <div class="controls-top">
@@ -885,6 +1165,77 @@ fetchAll().then(records => {
   document.getElementById("count").textContent = "Error loading data";
   console.error(err);
 });
+
+function openDrawer() {
+  document.getElementById("drawerOverlay").classList.add("open");
+  document.getElementById("drawer").classList.add("open");
+}
+function closeDrawer() {
+  document.getElementById("drawerOverlay").classList.remove("open");
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("form-msg").className = "form-msg";
+  document.getElementById("form-msg").textContent = "";
+}
+function resetForm() {
+  ["f-name","f-company","f-builderid","f-email","f-city","f-state","f-notes"]
+    .forEach(id => document.getElementById(id).value = "");
+  document.getElementById("f-country").value = "";
+  document.getElementById("f-engagement").value = "";
+  document.getElementById("f-tag").value = "";
+  document.getElementById("form-msg").className = "form-msg";
+  document.getElementById("form-msg").textContent = "";
+}
+async function submitMember() {
+  const name = document.getElementById("f-name").value.trim();
+  const company = document.getElementById("f-company").value.trim();
+  const msg = document.getElementById("form-msg");
+  if (!name || !company) {
+    msg.textContent = "Name and Company Name are required.";
+    msg.className = "form-msg error";
+    return;
+  }
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.textContent = "Adding…";
+  const fields = { Name: name, "Company Name": company };
+  const builderid = document.getElementById("f-builderid").value.trim();
+  const email = document.getElementById("f-email").value.trim();
+  const city = document.getElementById("f-city").value.trim();
+  const state = document.getElementById("f-state").value.trim();
+  const country = document.getElementById("f-country").value;
+  const engagement = document.getElementById("f-engagement").value;
+  const tag = document.getElementById("f-tag").value;
+  const notes = document.getElementById("f-notes").value.trim();
+  if (builderid) fields["Builder ID"] = builderid;
+  if (email) fields["Email"] = email;
+  if (city) fields["City"] = city;
+  if (state) fields["State"] = state;
+  if (country) fields["Country"] = country;
+  if (engagement) fields["Engagement"] = engagement;
+  if (tag) fields["Tags"] = [tag];
+  if (notes) fields["Notes"] = notes;
+  try {
+    const res = await fetch(`https://api.airtable.com/v0/${BASE}/${TABLE}`, {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${WRITE_TOKEN}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ fields })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    msg.textContent = `${name} added successfully!`;
+    msg.className = "form-msg success";
+    allRecords = await fetchAll();
+    populateStateFilter();
+    render();
+    btn.disabled = false;
+    btn.textContent = "Add Member";
+    setTimeout(() => { resetForm(); closeDrawer(); }, 1500);
+  } catch(e) {
+    msg.textContent = "Failed to add member. Please try again.";
+    msg.className = "form-msg error";
+    btn.disabled = false;
+    btn.textContent = "Add Member";
+  }
+}
 </script>
 </body>
 </html>
