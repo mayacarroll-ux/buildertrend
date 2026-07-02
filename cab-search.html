@@ -417,9 +417,10 @@
 </div>
 
 <script>
-const TOKEN = "REMOVED_READ_TOKEN";
-const BASE = "appH2izKTgWzk0Y70";
-const TABLE = "Table%201";
+const AIRTABLE_ENDPOINTS = window.BUILDERTREND_AIRTABLE_ENDPOINTS || {};
+const AIRTABLE_READ_ENDPOINT = AIRTABLE_ENDPOINTS.read || "";
+// TODO: Configure AIRTABLE_READ_ENDPOINT with a backend/serverless route.
+// The backend must read Airtable credentials from environment variables.
 
 const CA_PROVINCES = new Set(["AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"]);
 const AU_STATES = new Set(["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"]);
@@ -449,14 +450,31 @@ async function fetchAll() {
   let records = [];
   let offset = null;
   do {
-    let url = `https://api.airtable.com/v0/${BASE}/${TABLE}?pageSize=100`;
-    if (offset) url += `&offset=${offset}`;
-    const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    const url = buildRecordsUrl(AIRTABLE_READ_ENDPOINT, { pageSize: "100", offset });
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Airtable read endpoint failed (${res.status})`);
     const data = await res.json();
-    records.push(...data.records);
+    records.push(...recordsFromPayload(data));
     offset = data.offset;
   } while (offset);
   return records;
+}
+
+function buildRecordsUrl(endpoint, params) {
+  if (!endpoint) {
+    throw new Error("Airtable read backend endpoint is not configured.");
+  }
+  const url = new URL(endpoint, window.location.href);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value) url.searchParams.set(key, value);
+  });
+  return url;
+}
+
+function recordsFromPayload(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (payload && Array.isArray(payload.records)) return payload.records;
+  throw new Error("Airtable read endpoint returned an invalid records response.");
 }
 
 function badgeClass(eng) {
